@@ -1,0 +1,29 @@
+/* Custom scrollbar for a better look */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.7);
+  /* A shade of indigo */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 1);
+}
+
+/* Styles for the PDF print version */
+@media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    /* Important for backgrounds in Chrome */
+    print-color-adjust: exact;
+    /* Standard */
+  }
+}
