@@ -2,61 +2,173 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Futuristic CV Generator</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons for icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="./script.js"></script>
+    <script src="./script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
     <link rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2360A5FA;' /%3E%3Cstop offset='100%25' style='stop-color:%23A78BFA;' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)' /%3E%3Ctext x='50' y='65' font-family='sans-serif' font-size='50' fill='white' text-anchor='middle' font-weight='bold'%3ECV%3C/text%3E%3C/svg%3E">
-
-
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2360A5FA;' /%3E%3Cstop offset='100%25' style='stop-color:%23A78BFA;' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23g)' /%3E%3Ctext x='50' y='65' font-family='sans-serif' font-size='50' fill='white' text-anchor='middle' font-weight='bold'%3ECV%3C/text%3E%3C/svg%3E" />
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white font-sans">
+<body>
+    <div class="container">
+        <div class="header fade-in">
+            <h1>
+                <span class="sparkle-icon">✨</span>
+                Futuristic CV Generator
+            </h1>
+            <p>Create professional CVs with cutting-edge design</p>
+        </div>
 
-    <div id="app" class="min-h-screen p-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <div class="flex items-center justify-center gap-2 mb-4">
-                    <i data-lucide="sparkles" class="text-blue-400"></i>
-                    <h1
-                        class="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                        Futuristic CV Generator
-                    </h1>
-                </div>
-                <p class="text-gray-300 text-lg">Create professional CVs with cutting-edge design</p>
+        <div class="mode-toggle">
+            <div class="toggle-container">
+                <button id="editModeBtn" class="toggle-btn active">
+                    <span class="icon">✏️</span>
+                    <span>Edit Mode</span>
+                </button>
+                <button id="previewModeBtn" class="toggle-btn">
+                    <span class="icon">👁️</span>
+                    <span>Preview</span>
+                </button>
             </div>
+        </div>
 
-            <!-- Mode Toggle -->
-            <div class="flex justify-center mb-8">
-                <div class="bg-white/10 backdrop-blur-sm rounded-lg p-1 border border-white/20 flex">
-                    <button id="editModeBtn"
-                        class="px-6 py-2 rounded-md transition-all duration-300 flex items-center gap-2 bg-blue-500 text-white">
-                        <i data-lucide="edit-3" class="w-4 h-4"></i>
-                        Edit Mode
+        <div id="editMode" class="main-content">
+            <div class="form-panel glass hover-glow">
+                <div class="step-navigation">
+                    <button class="step-btn active" data-step="0">
+                        <span class="icon">👤</span>
+                        <span>Personal</span>
                     </button>
-                    <button id="previewModeBtn"
-                        class="px-6 py-2 rounded-md transition-all duration-300 flex items-center gap-2 text-gray-300 hover:text-white">
-                        <i data-lucide="eye" class="w-4 h-4"></i>
-                        Preview
+                    <button class="step-btn" data-step="1">
+                        <span class="icon">💼</span>
+                        <span>Experience</span>
+                    </button>
+                    <button class="step-btn" data-step="2">
+                        <span class="icon">🎓</span>
+                        <span>Education</span>
+                    </button>
+                    <button class="step-btn" data-step="3">
+                        <span class="icon">🏆</span>
+                        <span>Skills</span>
+                    </button>
+                </div>
+
+                <div id="stepContent">
+                    <div id="step0" class="step-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" placeholder="John Doe" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="john@example.com" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" placeholder="+1 (555) 123-4567" />
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" placeholder="New York, NY" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="summary">Professional Summary</label>
+                            <textarea id="summary"
+                                placeholder="Brief professional summary highlighting your key strengths and career objectives..."></textarea>
+                        </div>
+                    </div>
+
+                    <div id="step1" class="step-content hidden">
+                        <div id="experienceContainer"></div>
+                        <button class="btn btn-primary btn-add" onclick="addExperience()">
+                            + Add Experience
+                        </button>
+                    </div>
+
+                    <div id="step2" class="step-content hidden">
+                        <div id="educationContainer"></div>
+                        <button class="btn btn-primary btn-add" onclick="addEducation()">
+                            + Add Education
+                        </button>
+                    </div>
+
+                    <div id="step3" class="step-content hidden">
+                        <div class="form-group">
+                            <label>Skills</label>
+                            <div class="skill-input-group">
+                                <input type="text" id="skillInput" placeholder="Add a skill..."
+                                    onkeypress="handleSkillEnter(event)" />
+                                <button class="btn btn-success" onclick="addSkill()">
+                                    Add
+                                </button>
+                            </div>
+                            <div id="skillsContainer" class="skills-container"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Achievements</label>
+                            <div class="skill-input-group">
+                                <input type="text" id="achievementInput" placeholder="Add an achievement..."
+                                    onkeypress="handleAchievementEnter(event)" />
+                                <button class="btn btn-success" onclick="addAchievement()">
+                                    Add
+                                </button>
+                            </div>
+                            <div id="achievementsContainer" class="achievements-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button id="prevBtn" class="btn" style="background: #6b7280; color: white" onclick="previousStep()"
+                        disabled>
+                        Previous
+                    </button>
+                    <button id="nextBtn" class="btn btn-primary" onclick="nextStep()">
+                        Next
                     </button>
                 </div>
             </div>
 
-            <!-- Main Content Area -->
-            <div id="mainContent">
-                <!-- Edit view will be rendered here by JS -->
+            <div class="preview-panel glass">
+                <div style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 20px;
+            ">
+                    <h2 style="color: white; font-size: 1.3rem; font-weight: 600">
+                        Live Preview
+                    </h2>
+                    <button class="btn btn-success" onclick="downloadPDF()">
+                        <span class="icon">📥</span>
+                        Download PDF
+                    </button>
+                </div>
+                <div id="cvPreview" class="cv-preview"></div>
             </div>
-            <!-- Full Preview view will be rendered here by JS -->
-            <div id="fullPreviewContent" class="hidden"></div>
+        </div>
+
+        <div id="previewMode" class="hidden">
+            <div style="text-align: center; margin-bottom: 30px">
+                <button class="btn btn-success" onclick="downloadPDF()" style="font-size: 1.1rem; padding: 15px 30px">
+                    <span class="icon">📥</span>
+                    Download CV as PDF
+                </button>
+            </div>
+            <div style="max-width: 900px; margin: 0 auto">
+                <div id="fullPreview" class="cv-preview"></div>
+            </div>
         </div>
     </div>
-
 </body>
 
 </html>
